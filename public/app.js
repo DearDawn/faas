@@ -95,7 +95,7 @@ function App() {
   const getList = React.useCallback((filterName = '') => {
     request('/api/faas/list').then((res) => {
       setFunctionList(res.data)
-      let functionInfo = res.data[0]
+      let functionInfo = res.data[0] || {}
       const findFunc = res.data.find((it) => it.name === filterName) || functionInfo
       functionInfo = filterName ? findFunc : functionInfo
       setFuncInfo(functionInfo)
