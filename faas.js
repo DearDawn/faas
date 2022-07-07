@@ -107,7 +107,7 @@ router.use('/create', (req, res, next) => {
     return
   }
 
-  fs.writeFileSync(filePath, "module.exports = (req, res) => {\n  res.end('Hello World!')\n}")
+  fs.writeFileSync(filePath, 'module.exports = (req, res) => {\n  res.json({hello: "world"})\n}')
   res.send(getResp(0, 'ok'))
 })
 
