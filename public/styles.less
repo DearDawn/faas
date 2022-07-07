@@ -9,6 +9,7 @@ body {
 
 #root {
   --orange: #f50;
+  --gray: #ccc;
   .container {
     min-width: 700px;
     margin-top: 50px;
@@ -50,7 +51,7 @@ body {
 
         .catalog {
           display: block;
-          width: 150px;
+          flex: 1 0 150px;
           list-style-type: none;
           padding: 0;
           margin: 0;
@@ -91,7 +92,7 @@ body {
 
         .textarea {
           border: 2px solid var(--orange);
-          flex: 1;
+          flex: 9;
           align-self: stretch;
         }
       }
@@ -140,8 +141,15 @@ body {
 button {
   padding: 3px 10px;
   font-size: 16px;
-  color: var(--orange);
+  color: #fff;
   cursor: pointer;
+  background-color: var(--orange);
+  border-radius: 2px;
+  border: none;
+
+  &:disabled {
+    background-color: var(--gray);
+  }
 }
 
 textarea {
