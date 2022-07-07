@@ -36,7 +36,7 @@ router.use('/list', (req, res, next) => {
   const functionsPath = path.join(__dirname, 'functions')
 
   if (fs.existsSync(functionsPath)) {
-    const fileList = fs.readdirSync(functionsPath)
+    const fileList = fs.readdirSync(functionsPath).filter((it) => it.endsWith('.js'))
     res.send(
       getResp(
         0,
