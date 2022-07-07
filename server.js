@@ -38,6 +38,6 @@ app.use('/', (req, res) => {
   res.send(fs.readFileSync(path.join(__dirname, 'client.html')).toString())
 })
 
-app.listen(7001, () => {
+app.listen(7000, () => {
   console.log('Server is running')
 })
