@@ -25,9 +25,11 @@ router.use('/get', (req, res, next) => {
     return
   }
 
+  const tempExist = fs.existsSync(filePath + '_temp')
+
   res.send(
     getResp(0, 'ok', {
-      content: fs.readFileSync(filePath).toString(),
+      content: fs.readFileSync(tempExist ? filePath + '_temp' : filePath).toString(),
     })
   )
 })
@@ -36,19 +38,23 @@ router.use('/list', (req, res, next) => {
   const functionsPath = path.join(__dirname, 'functions')
 
   if (fs.existsSync(functionsPath)) {
-    const fileList = fs.readdirSync(functionsPath).filter((it) => it.endsWith('.js'))
+    const fileList = fs
+      .readdirSync(functionsPath)
+      .filter((it) => it.endsWith('.js') || it.endsWith('.js_temp'))
+    const functionList = fileList.filter((it) => !it.endsWith('.js_temp'))
     res.send(
       getResp(
         0,
         'ok',
-        fileList.map((it) => {
+        functionList.map((it) => {
           const name = it.replace(/\.js$/, '')
           console.log('[dodo] ', 'getFunction(name)', getFunction(name))
           return {
             name,
             file: it,
             url: '/functions/' + name,
-            online: !!getFunction(name),
+            test_url: '/functions/' + name + '?test=1',
+            online: !fileList.includes(it + '_temp'),
           }
         })
       )
@@ -73,7 +79,7 @@ router.use('/save', (req, res, next) => {
     return
   }
 
-  fs.writeFileSync(filePath, fileContent)
+  fs.writeFileSync(filePath + '_temp', fileContent)
   res.send(getResp(0, 'ok'))
 })
 
@@ -89,7 +95,14 @@ router.use('/publish', (req, res, next) => {
     return
   }
 
-  publishFunction(functionName)
+  try {
+    publishFunction(functionName)
+  } catch (error) {
+    const errorInfo = `${error.name}\n${error.message}\n${error.stack}`
+    console.log('[dodo] ', 'error', errorInfo)
+    res.send(getResp(500, 'error', errorInfo))
+    return
+  }
   res.send(getResp(0, 'ok'))
 })
 

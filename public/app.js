@@ -54,7 +54,7 @@ function Debug(props) {
   }, [])
 
   React.useEffect(() => {
-    setLink(`${funcInfo.url}?`)
+    setLink(`${funcInfo.test_url}`)
     setMode('GET')
     setResp('')
   }, [funcInfo])
@@ -190,7 +190,7 @@ function App() {
             </button>
             <button
               className='btn'
-              disabled={contentChanged || !contentSaved}
+              disabled={funcInfo.online && (contentChanged || !contentSaved)}
               onClick={handlePublish}
             >
               上线
@@ -205,7 +205,9 @@ function App() {
                 onClick={() => {
                   handleFuncitonClick(it)
                 }}
-                className={`item ${it.name === funcInfo.name ? 'active' : ''}`}
+                className={`item ${it.name === funcInfo.name ? 'active' : ''}  ${
+                  it.online ? '' : 'offline'
+                }`}
               >
                 {it.file}
               </li>

@@ -11,6 +11,7 @@ app.use('/public/faas', express.static(path.join(__dirname, 'public')))
 
 app.use('/functions', (req, res, next) => {
   console.log('[dodo] ', 'req.path', req.path)
+  const { test } = req.query || {}
 
   const fileName = req.path.slice(1)
   const filePath = functionExist(fileName)
@@ -20,8 +21,15 @@ app.use('/functions', (req, res, next) => {
     return
   }
 
-  loadFunction(fileName)
-  getFunction(fileName)(req, res)
+  try {
+    loadFunction(fileName)
+    getFunction(fileName, test === '1')(req, res)
+  } catch (error) {
+    const errorInfo = `${error.name}\n${error.message}\n${error.stack}`
+    console.log('[dodo] ', 'error', errorInfo)
+    res.send(getResp(500, 'error', errorInfo))
+    return
+  }
 })
 
 app.use('/api/faas', faasRouter)
@@ -30,6 +38,6 @@ app.use('/', (req, res) => {
   res.send(fs.readFileSync(path.join(__dirname, 'client.html')).toString())
 })
 
-app.listen(7000, () => {
+app.listen(7001, () => {
   console.log('Server is running')
 })

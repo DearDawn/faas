@@ -30,11 +30,34 @@ const publishFunction = (name) => {
   if (functionMap[name]) {
     delete require.cache[functionExist(name)]
   }
+
+  const tempPath = functionExist(name) + '_temp'
+  const tempExist = fs.existsSync(tempPath)
+  let err = false
+
+  if (tempExist) {
+    fs.copyFileSync(tempPath, functionExist(name))
+    fs.rmSync(tempPath)
+  } else {
+    err = true
+  }
+
   functionMap[name] = require(functionExist(name))
+  if (err) throw new Error('已是最新版本，无需发布')
 }
 
-const getFunction = (name) => {
+const getFunction = (name, isTest) => {
   console.log('[dodo] ', 'functionMap', functionMap)
+
+  if (isTest) {
+    const tempPath = functionExist(name) + '_temp'
+    const tempExist = fs.existsSync(tempPath)
+    if (tempExist) {
+      delete require.cache[functionExist(name)]
+      return require(tempExist ? tempPath : functionExist(name))
+    }
+  }
+
   return functionMap[name]
 }
 

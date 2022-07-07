@@ -16,7 +16,7 @@ body {
     padding: 20px;
     display: flex;
     .dev-box {
-      flex: 1;
+      flex: 3 0 600px;
       .header {
         margin: 0px 20px 10px;
         display: flex;
@@ -55,11 +55,12 @@ body {
           padding: 0;
           margin: 0;
           .item {
-            padding: 10px 20px;
+            padding: 10px 30px;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
             cursor: pointer;
+            position: relative;
 
             &:hover {
               background-color: #f5f5f5;
@@ -69,6 +70,21 @@ body {
               background-color: var(--orange);
               color: #fff;
               box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            }
+
+            &.offline::after {
+              content: '';
+              position: absolute;
+              left: 10px;
+              top: 0;
+              bottom: 0;
+              width: 8px;
+              // background-color: #fff;
+              border: #1f2129 solid 1px;
+              height: 8px;
+              border-radius: 50%;
+              display: block;
+              margin: auto;
             }
           }
         }
@@ -82,8 +98,7 @@ body {
     }
 
     .debug-box {
-      flex: none;
-      width: 300px;
+      flex: 1 0 300px;
       .req {
         display: flex;
         align-items: center;
