@@ -1,0 +1,4 @@
+module.exports = async (req, res) => {
+  const list = await mongodb.collection('site').find().toArray()
+  res.json({ hello: "world", list })
+}

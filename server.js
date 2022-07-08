@@ -41,3 +41,20 @@ app.use('/', (req, res) => {
 app.listen(7000, () => {
   console.log('Server is running')
 })
+
+const MongoClient = require('mongodb').MongoClient
+const url = 'mongodb://127.0.0.1:27017/testdb'
+// const url = 'mongodb://10.227.30.96:27017/testdb'
+
+MongoClient.connect(url, async function (err, db) {
+  if (err) throw err
+
+  // 退出时关闭数据库
+  process.on('exit', () => db.close())
+
+  global.mongodb = db.db()
+  const list = await mongodb.collection('site').find().toArray()
+  const obj = { name: '连接测试', url: `第${list.length + 1}条数据`, time: new Date() }
+  const res = await mongodb.collection('site').insertOne(obj)
+  console.log('文档插入成功', res)
+})

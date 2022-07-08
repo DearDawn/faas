@@ -120,7 +120,13 @@ router.use('/create', (req, res, next) => {
     return
   }
 
-  fs.writeFileSync(filePath, 'module.exports = (req, res) => {\n  res.json({hello: "world"})\n}')
+  const templateStr = `module.exports = async (req, res) => {\n  res.json({hello: "world"})\n}`
+  const templatePath = path.join(__dirname, 'functions', '.template')
+  const template = fs.existsSync(templatePath)
+    ? fs.readFileSync(templatePath).toString()
+    : templateStr
+
+  fs.writeFileSync(filePath, template)
   res.send(getResp(0, 'ok'))
 })
 
