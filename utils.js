@@ -20,12 +20,12 @@ const loadFunction = (name) => {
 
   if (!functionMap[name]) {
     functionMap[name] = require(functionExist(name))
-    freeFunction()
+    // freeFunction()
   } else {
-    if (timerMap[name]) {
-      clearTimeout(timerMap[name])
-      freeFunction()
-    }
+    // if (timerMap[name]) {
+    //   clearTimeout(timerMap[name])
+    //   freeFunction()
+    // }
     console.log('[dodo] ', 'no need load', name)
   }
 }
