@@ -14,6 +14,7 @@ const loadFunction = (name) => {
     timerMap[name] = setTimeout(() => {
       delete require.cache[functionExist(name)]
       delete functionMap[name]
+      timerMap[name] = 0
     }, 60000)
   }
 
