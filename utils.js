@@ -67,7 +67,7 @@ const getFunction = (name, isTest) => {
     const tempPath = functionExist(name) + '_temp'
     const tempExist = fs.existsSync(tempPath)
     if (tempExist) {
-      delete require.cache[functionExist(name)]
+      delete require.cache[tempExist ? tempPath : functionExist(name)]
       return require(tempExist ? tempPath : functionExist(name))
     }
   }
