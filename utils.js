@@ -1,6 +1,7 @@
 const fs = require('fs')
 const path = require('path')
 const functionMap = {}
+const timerMap = {}
 console.log('[dodo] ', '4444', 4444)
 
 const functionExist = (name, ext = '.js') => {
@@ -9,9 +10,21 @@ const functionExist = (name, ext = '.js') => {
 }
 
 const loadFunction = (name) => {
+  const freeFunction = () => {
+    timerMap[name] = setTimeout(() => {
+      delete require.cache[functionExist(name)]
+      delete functionMap[name]
+    }, 60000)
+  }
+
   if (!functionMap[name]) {
     functionMap[name] = require(functionExist(name))
+    freeFunction()
   } else {
+    if (timerMap[name]) {
+      clearTimeout(timerMap[name])
+      freeFunction()
+    }
     console.log('[dodo] ', 'no need load', name)
   }
 }
@@ -19,7 +32,7 @@ const loadFunction = (name) => {
 const resetFunction = (name) => {
   if (functionMap[name]) {
     delete require.cache[functionExist(name)]
-    functionMap[name] = require(functionExist(name))
+    loadFunction(name)
     console.log('[dodo] ', 'reset', name, functionMap[name])
   } else {
     console.log('[dodo] ', 'no need reset', name)
@@ -42,7 +55,7 @@ const publishFunction = (name) => {
     err = true
   }
 
-  functionMap[name] = require(functionExist(name))
+  loadFunction(name)
   if (err) throw new Error('已是最新版本，无需发布')
 }
 
