@@ -51,7 +51,7 @@ try {
     cert: fs.readFileSync('/www/wwwroot/ssl/Nginx/1_dododawn.com_bundle.pem'),
   }
 
-  https.createServer(options, app).listen(port, () => {
+  https.createServer(options, app).listen(port + 1, () => {
     console.log(`https Server is running, goto: https://localhost:${port + 1}`)
   })
 } catch (error) {
