@@ -38,13 +38,15 @@ app.use('/', (req, res) => {
   res.send(fs.readFileSync(path.join(__dirname, 'client.html')).toString())
 })
 
-app.listen(7000, () => {
-  console.log('Server is running')
+const port = 7000
+app.listen(port, () => {
+  console.log(`Server is running, goto: http://localhost:${port}`)
 })
 
 const MongoClient = require('mongodb').MongoClient
 const url = 'mongodb://127.0.0.1:27017/testdb'
 // const url = 'mongodb://10.227.30.96:27017/testdb'
+// const url = 'mongodb://122.51.49.61:27017/testdb'
 
 MongoClient.connect(url, async function (err, db) {
   if (err) throw err
