@@ -39,7 +39,7 @@ app.use('/', (req, res) => {
   res.send(fs.readFileSync(path.join(__dirname, 'client.html')).toString())
 })
 
-const port = 7001
+const port = 7010
 app.listen(port, () => {
   console.log(`Server is running, goto: http://localhost:${port}`)
 })
