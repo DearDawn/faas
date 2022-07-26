@@ -1,4 +1,5 @@
 const express = require('express')
+const https = require('https')
 const app = express()
 const fs = require('fs')
 const path = require('path')
@@ -42,6 +43,20 @@ const port = 7001
 app.listen(port, () => {
   console.log(`Server is running, goto: http://localhost:${port}`)
 })
+
+// express 使用 https
+try {
+  const options = {
+    key: fs.readFileSync('/www/wwwroot/ssl/Nginx/0_dododawn.com.key'),
+    cert: fs.readFileSync('/www/wwwroot/ssl/Nginx/1_dododawn.com_bundle.pem'),
+  }
+
+  https.createServer(options, app).listen(port, () => {
+    console.log(`https Server is running, goto: https://localhost:${port + 1}`)
+  })
+} catch (error) {
+  console.log('[dodo] ', 'error', error)
+}
 
 const MongoClient = require('mongodb').MongoClient
 const url = 'mongodb://127.0.0.1:27017/testdb'
