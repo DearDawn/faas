@@ -8,7 +8,7 @@ const { getFunction, loadFunction, functionExist, getResp } = require('./utils.j
 const bodyParser = require('body-parser')
 app.use(bodyParser.json())
 // static files
-app.use('/public_faas', express.static(path.join(__dirname, 'public')))
+app.use('/public/faas', express.static(path.join(__dirname, 'public')))
 
 app.use('/functions', (req, res, next) => {
   console.log('[dodo] ', 'req.path', req.path)
